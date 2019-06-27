@@ -73,7 +73,7 @@ def main():
         print("connected")
         visionTable = NetworkTables.getTable("vision")
 
-    cap = cv2.VideoCapture(-1)
+    cap = cv2.VideoCapture(2)
 
     if CONFIGURE:
         print("configuring camera")
@@ -116,6 +116,7 @@ def main():
                 rect1 = rect
                 break
 
+        # Draw to screen
         for contour in contours:
             rect = getRect(contour)
             slope = getRectangleTiltSlope(rect)
@@ -131,6 +132,8 @@ def main():
         centroid_left_y = 0.0
         centroid_right_x = 0.0
         centroid_right_y = 0.0
+        centroid_left_area = 0.0
+        centroid_right_area = 0.0
 
         # If we have 2 rectangles and they're arranged in the right way
         if rect1 is not None and rect2 is not None and getCentroid(rect1)[0] < getCentroid(rect2)[0]:
@@ -146,8 +149,9 @@ def main():
         else:
             valid = False
 
+        
+        # print("valid: ", valid, " l: ", centroid_left_x, " r: ", centroid_right_x)
 
-        print("valid: ", valid, " l: ", centroid_left_x, " r: ", centroid_right_x)
 
         if NETWORKING:
             # Send the data to the computer
